@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr" ng-app="adheScanJS">
+<head>  
+    <meta charset="utf-8">  
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />  
+    <title>AdheScan JS Testing</title>  
+    
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.27/angular.min.js" ></script>
+	<script src="https://cdn.socket.io/socket.io-1.2.1.js"></script>
+    <script type="text/javascript" src="mongo.js" ></script>  
+    <script type="text/javascript" src="test.js" ></script>
+	<script type="text/javascript" src="adhescan.js" ></script>
+	
+	<script>
+		var socket = io.connect('http://localhost:8080');
+    </script>    
+          
+</head>  
+<body>
+	<header>
+		<h1>AdheScanJS Testing</h1>
+	</header>
+	
+	
+	<button onclick="socket.emit('log', '1000');" >Send Log</button>
+	
+	
+</body>
+</html>

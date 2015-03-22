@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr" ng-app="adheScanJS">
+<head>  
+    <meta charset="utf-8">  
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />  
+    <title>AdheScan JS</title>  
+    
+	<script src="https://cdn.socket.io/socket.io-1.2.1.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.27/angular.min.js" ></script>
+    <script type="text/javascript" src="mongo.js" ></script>  
+    <script type="text/javascript" src="test.js" ></script>
+	<script type="text/javascript" src="adhescan.js" ></script>
+	
+	<link href="adhescan.css" rel="stylesheet" type="text/css" />  
+          
+</head>  
+<body ng-controller="adheScanJSCtrl">
+	<header>
+		<h1>AdheScanJS</h1>
+		
+	</header>
+	
+	<div ng-if='connected == false' id='no_connect'><span>NON CONNECTÉ</span></div>
+	
+	<section id='lastlog'>
+		<span ng-show="lastlog_name">Bienvenue {{ lastlog_name }}</span>
+	</section>
+	
+	<section id='listing' >
+		<article id='col_droite'>
+			<div id='details'>Détails
+				
+			</div>
+			<div id='actions'>Actions
+				
+			</div>
+			
+		</article>
+		<article id='col_gauche' ng-show="users.length">
+			<form>
+				<input type='text' ng-model="searchText" placeholder="Recherche "/>
+			</form>
+		
+			<ul id="users-list">
+				<li ng-repeat="user in users | filter:searchText" >
+					<div class="view">
+						
+						<span>{{user.nom}} {{user.prenom}} {{user.badges.0}} </span>
+						
+					</div>
+				</li>
+			</ul>
+			
+		</article>
+		
+	</section>
+</body>
+</html>
