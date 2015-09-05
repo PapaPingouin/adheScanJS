@@ -63,27 +63,52 @@ adheScanJS.controller('adheScanJSCtrl', ['$scope','$interval','socket',
         // On initialise les todos avec un tableau vide : []
         var users = $scope.users = listingSrc;
         
+        $scope.mode_wait_badge = false;
+        $scope.passages = [];
+        
+        for( var e in $scope.users )
+        	$scope.users[ e ].n = e;
+        
+        $scope.details = null;
+        
         $scope.connected = true;
         
         $scope.lastlog_name = 'test';
         
         socket.on('log', function (data) {
+			data = data.toLowerCase();
 			$scope.lastlog_id = data;
-			
+			console.log( data );
 			for( var i in $scope.users )
 			{
-				if( $scope.users[ i ].badges[0] == data )
+				if( $scope.users[ i ].badges )
 				{
-					$scope.lastlog_name = $scope.users[ i ].prenom;
-					return;
+					for( var j=0;j<$scope.users[ i ].badges.length;j++)
+					{
+						if( $scope.users[ i ].badges[ j ] == data )
+						{
+							$scope.lastlog_name = $scope.users[ i ].prenom;
+							$scope.passages.unshift( { time: new Date(), badge: data, nom: $scope.users[ i ].nom, prenom: $scope.users[ i ].prenom  } );
+							$scope.pass( $scope.users[ i ]._id, data );
+							return;
+						}
+					}
 				}
 			}
-			$scope.lastlog_name = null;
+			console.log(  'mode_wait_badge',$scope.mode_wait_badge );
+			if( $scope.mode_wait_badge )
+			{
+				$scope.details.badges.push( data );
+				$scope.pushBadge( data ); // send info to server
+				$scope.mode_wait_badge = false;
+				return;
+			}
+			$scope.lastlog_name = 'Inconnu';
 			
 		});
         
         
-        var check_timer = $interval( function(){
+        $scope.check_timer = $interval( function(){
 												if( io.managers[ url_server ].connected.length == 1 && io.managers[ url_server ].connected[0].connected==true  )
 													$scope.connected = true;
 												else
@@ -102,6 +127,37 @@ adheScanJS.controller('adheScanJSCtrl', ['$scope','$interval','socket',
 		})
 		
 		*/
+		
+		$scope.changeAdh = function( index )
+		{
+			$scope.mode_wait_badge = false;
+			$scope.details = $scope.users[ index ];
+			//console.log( $scope.mode_wait_badge );
+		}
+		
+		$scope.pass = function( user_id, badge )
+		{
+			socket.emit( 'push', {  '_id': user_id  ,'type':'passage', value : badge, time: new Date() } );
+			console.log( 'pass', user_id );
+			
+			
+		}
+		$scope.push = function( type )
+		{
+			socket.emit( 'push', {  '_id': $scope.details._id  ,'type':type, value : $scope.details.adhesion[ type ] } );
+			console.log( type, $scope.details.adhesion[ type ] );
+			socket.emit( 'save', $scope.users );
+			console.log( "Save" );
+			
+		}
+		$scope.pushBadge = function( badge_id )
+		{
+			socket.emit( 'push', {  '_id': $scope.details._id  ,'type':'badge', value : badge_id } );
+			console.log( 'addBadge',badge_id );
+			socket.emit( 'save', $scope.users );
+			console.log( "Save" );
+		
+		}
         
     }
 ]);

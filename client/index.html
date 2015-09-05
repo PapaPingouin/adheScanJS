@@ -7,8 +7,7 @@
     
 	<script src="https://cdn.socket.io/socket.io-1.2.1.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.27/angular.min.js" ></script>
-    <script type="text/javascript" src="mongo.js" ></script>  
-    <script type="text/javascript" src="test.js" ></script>
+    <script type="text/javascript" src="data.js" ></script>
 	<script type="text/javascript" src="adhescan.js" ></script>
 	
 	<link href="adhescan.css" rel="stylesheet" type="text/css" />  
@@ -27,12 +26,35 @@
 	</section>
 	
 	<section id='listing' >
-		<article id='col_droite'>
-			<div id='details'>Détails
+		<article  id='col_droite'>
+			<div ng-hide='!details' id='details'><h2>Détails</h2>
+				Nom : {{details.nom}}<br />
+				Prénom : {{details.prenom}}<br />
+				Date de naissance : {{details.naissance}}<br />
+				Séance : <span ng-repeat="seance in details.adhesion.seances">{{seance}} </span><br />
+				Paiement : {{details.adhesion.paiement.mode}} {{details.adhesion.paiement.value}} €<br />
+				Certificat médical : <input type='checkbox' ng-model="details.adhesion.certif" ng-change="push('certif');" /><br />
+				Décharge de responsabilité : <input type='checkbox' ng-model="details.adhesion.decharge" ng-change="push('decharge');"  /><br />
+				<div ng-if="details.age < 18">
+				Autorisation parentale : <input type='checkbox' ng-model="details.adhesions.auth_parent" ng-change="push('auth_parent');"  /><br />
+				</div>
+				<br />
+				Badges : <ul><li ng-repeat="badge in details.badges">{{badge}}</li></ul>
+				<button ng-click='mode_wait_badge = !mode_wait_badge;'>Ajouter un badge</button>
+				<div ng-hide='!mode_wait_badge' style='background : red; color: yellow; padding: '>
+					En attente d'un nouveau badge !
+				</div>
 				
 			</div>
-			<div id='actions'>Actions
+			<div ng-hide='!details' id='actions'><h2>Actions</h2>
+			<button>J'ai oublié mon badge</button>
 				
+			</div>
+			
+			<div>
+				<ul>
+					<li ng-repeat="passage in passages">{{passage.time | date : 'HH:mm:ss' }} : {{passage.nom}} {{passage.prenom}}</li>
+				</ul>
 			</div>
 			
 		</article>
@@ -42,10 +64,10 @@
 			</form>
 		
 			<ul id="users-list">
-				<li ng-repeat="user in users | filter:searchText" >
+				<li ng-repeat="user in users | filter:searchText" ng-click="changeAdh(user.n);" >
 					<div class="view">
 						
-						<span>{{user.nom}} {{user.prenom}} {{user.badges.0}} </span>
+						<span>{{user.n}} {{user.nom}} {{user.prenom}} {{user.badges.0}} </span>
 						
 					</div>
 				</li>
