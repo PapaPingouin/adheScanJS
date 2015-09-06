@@ -36,7 +36,7 @@
 				Certificat médical : <input type='checkbox' ng-model="details.adhesion.certif" ng-change="push('certif');" /><br />
 				Décharge de responsabilité : <input type='checkbox' ng-model="details.adhesion.decharge" ng-change="push('decharge');"  /><br />
 				<div ng-if="details.age < 18">
-				Autorisation parentale : <input type='checkbox' ng-model="details.adhesions.auth_parent" ng-change="push('auth_parent');"  /><br />
+				Autorisation parentale : <input type='checkbox' ng-model="details.adhesion.auth_parent" ng-change="push('auth_parent');"  /><br />
 				</div>
 				<br />
 				Badges : <ul><li ng-repeat="badge in details.badges">{{badge}}</li></ul>
