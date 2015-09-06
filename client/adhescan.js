@@ -84,7 +84,8 @@ adheScanJS.controller('adheScanJSCtrl', ['$scope','$interval','socket',
 			if( $scope.mode_supp_badge == true )
 			{
 				$scope.pushBadge( data, true ); // send info to server
-				
+				$scope.passages.unshift( { time: new Date(), badge: data, nom: 'SUPPRESSION', prenom: ''  } );
+				return;
 			}
 			else
 			{
@@ -114,6 +115,8 @@ adheScanJS.controller('adheScanJSCtrl', ['$scope','$interval','socket',
 				return;
 			}
 			$scope.lastlog_name = 'Inconnu';
+			$scope.passages.unshift( { time: new Date(), badge: data, nom: '?', prenom: '?'  } );
+								
 			
 		});
         
