@@ -47,7 +47,8 @@ header{
 	height: 100%;
 }
 #col_droite{
-	width: 40%;
+	width: calc( 40% - 20px - 2px);
+	padding: 10px;
 	float: right;
 }
 
@@ -84,3 +85,14 @@ header{
 	background: #ff7;
 	
 }
+
+div.zoneDroite{
+	border: 1px solid #888;
+	border-radius: 5px;
+	margin: 10px;
+	padding: 10px;
+}
+
+
+
+

@@ -27,7 +27,7 @@
 	
 	<section id='listing' >
 		<article  id='col_droite'>
-			<div ng-hide='!details' id='details'><h2>Détails</h2>
+			<div ng-hide='!details' id='details' class='zoneDroite'><h2>Détails</h2>
 				Nom : {{details.nom}}<br />
 				Prénom : {{details.prenom}}<br />
 				Date de naissance : {{details.naissance}}<br />
@@ -46,12 +46,12 @@
 				</div>
 				
 			</div>
-			<div ng-hide='!details' id='actions'><h2>Actions</h2>
+			<div ng-hide='!details' id='actions' class='zoneDroite'><h2>Actions</h2>
 			<button>J'ai oublié mon badge</button>
 				
 			</div>
 			
-			<div>
+			<div id='passages' class='zoneDroite'>
 				<ul>
 					<li ng-repeat="passage in passages">{{passage.time | date : 'HH:mm:ss' }} : {{passage.nom}} {{passage.prenom}}</li>
 				</ul>

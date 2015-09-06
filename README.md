@@ -5,13 +5,10 @@ Rewrite of adheScan with JS / node JS / mongodb
 
 install :
 
-sudo apt-get install nodejs-legacy
-
-npm install sqlite3
-
-sudo apt-get install libnfc-dev
+sudo apt-get install nodejs-legacy libnfc-dev npm
 
 npm install nfc
+npm install socket.io
 
 
 start
