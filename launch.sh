@@ -4,7 +4,9 @@
 
 
 echo "Récupération des données"
-wget -q -O client/data.js http://www.danceornothing.com/ws/adh/getall?key=$apiKey
+#wget -q -O client/data.js http://www.danceornothing.com/ws/adh/getall?key=$apiKey
+curl  -s -o client/data.js --fail http://www.danceornothing.com/ws/adh/getall?key=$apiKey
+
 echo "Donnée OK"
 
 cd servers

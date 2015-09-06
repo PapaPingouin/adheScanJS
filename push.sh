@@ -1,12 +1,14 @@
 #!/bin/bash
 
+./config.sh
+
 echo "Synchronisation des données"
 
 mv data/data.list data/data.list.work
 echo "Fichier temporaire créé"
 
 echo "Transfert des données"
-wget -q -O - --post-file=data/data.list.work http://www.danceornothing.com/ws/adh/update?key=********
+wget -q -O - --post-file=data/data.list.work http://www.danceornothing.com/ws/adh/update?key=$apiKey
 
 echo "Données OK"
 
