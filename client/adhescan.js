@@ -132,7 +132,9 @@ adheScanJS.controller('adheScanJSCtrl', ['$scope','$interval','socket',
 		{
 			$scope.mode_wait_badge = false;
 			$scope.details = $scope.users[ index ];
-			//console.log( $scope.mode_wait_badge );
+			if( $scope.details.badges == undefined )
+				$scope.details.badges = [];
+			console.log( $scope.details );
 		}
 		
 		$scope.pass = function( user_id, badge )
