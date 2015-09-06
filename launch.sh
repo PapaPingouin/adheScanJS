@@ -1,7 +1,10 @@
 #!/bin/bash
 
+./config.sh
+
+
 echo "Récupération des données"
-wget -q -O client/data.js http://www.danceornothing.com/ws/adh/getall?key=*********
+wget -q -O client/data.js http://www.danceornothing.com/ws/adh/getall?key=$apiKey
 echo "Donnée OK"
 
 cd servers

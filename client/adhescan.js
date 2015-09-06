@@ -64,6 +64,7 @@ adheScanJS.controller('adheScanJSCtrl', ['$scope','$interval','socket',
         var users = $scope.users = listingSrc;
         
         $scope.mode_wait_badge = false;
+        $scope.mode_supp_badge = false;
         $scope.passages = [];
         
         for( var e in $scope.users )
@@ -79,18 +80,27 @@ adheScanJS.controller('adheScanJSCtrl', ['$scope','$interval','socket',
 			data = data.toLowerCase();
 			$scope.lastlog_id = data;
 			console.log( data );
-			for( var i in $scope.users )
+			
+			if( $scope.mode_supp_badge == true )
 			{
-				if( $scope.users[ i ].badges )
+				$scope.pushBadge( data, true ); // send info to server
+				
+			}
+			else
+			{
+				for( var i in $scope.users )
 				{
-					for( var j=0;j<$scope.users[ i ].badges.length;j++)
+					if( $scope.users[ i ].badges )
 					{
-						if( $scope.users[ i ].badges[ j ] == data )
+						for( var j=0;j<$scope.users[ i ].badges.length;j++)
 						{
-							$scope.lastlog_name = $scope.users[ i ].prenom;
-							$scope.passages.unshift( { time: new Date(), badge: data, nom: $scope.users[ i ].nom, prenom: $scope.users[ i ].prenom  } );
-							$scope.pass( $scope.users[ i ]._id, data );
-							return;
+							if( $scope.users[ i ].badges[ j ] == data )
+							{
+								$scope.lastlog_name = $scope.users[ i ].prenom;
+								$scope.passages.unshift( { time: new Date(), badge: data, nom: $scope.users[ i ].nom, prenom: $scope.users[ i ].prenom  } );
+								$scope.pass( $scope.users[ i ]._id, data );
+								return;
+							}
 						}
 					}
 				}
@@ -99,7 +109,7 @@ adheScanJS.controller('adheScanJSCtrl', ['$scope','$interval','socket',
 			if( $scope.mode_wait_badge )
 			{
 				$scope.details.badges.push( data );
-				$scope.pushBadge( data ); // send info to server
+				$scope.pushBadge( data, false ); // send info to server
 				$scope.mode_wait_badge = false;
 				return;
 			}
@@ -152,10 +162,12 @@ adheScanJS.controller('adheScanJSCtrl', ['$scope','$interval','socket',
 			console.log( "Save" );
 			
 		}
-		$scope.pushBadge = function( badge_id )
+		$scope.pushBadge = function( badge_id, remove )
 		{
-			socket.emit( 'push', {  '_id': $scope.details._id  ,'type':'badge', value : badge_id } );
-			console.log( 'addBadge',badge_id );
+			remove = remove || false;
+			
+			socket.emit( 'push', {  '_id': $scope.details._id  ,'type':( remove ? 'suppbadge':'badge' ), value : badge_id } );
+			console.log( ( remove ? 'suppBadge':'addBadge' ),badge_id );
 			socket.emit( 'save', $scope.users );
 			console.log( "Save" );
 		

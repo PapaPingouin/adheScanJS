@@ -56,6 +56,12 @@
 					<li ng-repeat="passage in passages">{{passage.time | date : 'HH:mm:ss' }} : {{passage.nom}} {{passage.prenom}}</li>
 				</ul>
 			</div>
+			<div id='special' class='zoneDroite'>
+				<button ng-click='mode_supp_badge = !mode_supp_badge;' >Supression Badge</button>
+				<div ng-hide='!mode_supp_badge' style='background : red; color: yellow; padding: '>
+					En attente d'un nouveau badge a supprimer !
+				</div>
+			</div>
 			
 		</article>
 		<article id='col_gauche' ng-show="users.length">
