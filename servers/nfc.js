@@ -73,7 +73,7 @@ function sendEvent( url )
 	};
 	*/
 	
-	http.get('localhost:8081/'+url);
+	http.get('http://localhost:8081/'+url);
 
 	/*var req = http.request(options, function(res) {
 	  
