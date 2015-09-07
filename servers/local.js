@@ -28,7 +28,7 @@ Date.prototype.toYMDHIS = function()
 // Chargement du fichier index.html affiché au client
 var server = http.createServer(function(req, res) {
 	//console.log( req );
-    fs.readFile('../client'+req.url, 'utf-8', function(error, content) {
+    fs.readFile('../client'+req.url, function(error, content) {
         //res.writeHead(200, {"Content-Type": "text/html"});
         res.end(content);
     });
@@ -40,13 +40,13 @@ io.sockets.on('connection', function (socket, pseudo) {
     socket.emit('proto', 'OK');
     
     socket.on('proto', function(request) {
-		console.log( "receive [proto] : "+request);
+		console.log( "[LOCAL] receive [proto] : "+request);
 		if( request == 'test' )
 			socket.emit('proto', 'OK');
     });
     
     socket.on('log', function(request) {
-		console.log( "receive [log] : "+request);
+		console.log( "[LOCAL] receive [log] : "+request);
 		socket.broadcast.emit( 'log', request );
 	});
     
@@ -54,7 +54,7 @@ io.sockets.on('connection', function (socket, pseudo) {
     socket.on('message', function (message) {
         // On récupère le pseudo de celui qui a cliqué dans les variables de session
         socket.get('pseudo', function (error, pseudo) {
-            console.log(pseudo + ' me parle ! Il me dit : ' + message);
+            console.log('[LOCAL] '+pseudo + ' me parle ! Il me dit : ' + message);
         });
     }); 
     
@@ -63,17 +63,19 @@ io.sockets.on('connection', function (socket, pseudo) {
         //console.log( "push : "+request);
         writeData( request );
         for( e in request )
-			console.log( 'push '+e+' : '+request[e] );
+			console.log( '[LOCAL] push '+e+' : '+request[e] );
     }); 
     
     socket.on('save', function (request) { // save la BDD complete
         // On récupère le pseudo de celui qui a cliqué dans les variables de session
         //console.log( "push : "+request);
         saveBdd( request );
-        console.log( "Save BDD OK" );
+        console.log( "[LOCAL] Save BDD OK" );
     }); 
 });
+console.log( '[LOCAL] Demarrage serveur web');
 server.listen(8080);
+console.log( '[LOCAL] OK' );
 
 
 var server2 = http.createServer(function(req, res) {
@@ -83,11 +85,14 @@ var server2 = http.createServer(function(req, res) {
     {
 		io.emit('log',id);
 		res.end('OK : '+id);
-		console.log( 'transmit '+id );
+		console.log( '[LOCAL] transmit '+id );
 	} 
 });
+console.log( '[LOCAL] Demarrage serveur webservice nfc');
 server2.listen( 8081 );
+console.log( '[LOCAL] OK' );
 
+console.log( '[LOCAL] attente événements ...' );
 
 
 function writeData( data )

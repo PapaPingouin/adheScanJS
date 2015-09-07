@@ -1,8 +1,24 @@
-var nfc = require('nfc').nfc;
 var fs = require('fs');
 var http = require('http');
 
-var n = new nfc();
+try{
+	var nfc = require('nfc').nfc;
+	var n = new nfc();
+}
+catch(e)
+{
+	console.log('[NFC] ERREUR NFC');
+	var n = new Object();
+	n.on = function(){};
+	n.start = function(){ console.log('[NFC] ****** fake start ******');};
+}
+
+
+//var exec = require('exec');
+//exec(['wget','-O -','localhost:8081/c4a57776'],function(err, out, code) {});
+
+
+//var n = new nfc();
 
 var lastHex = false;
 var lastTime = false;
@@ -37,38 +53,35 @@ n.on('uid', function(uid) {
 		sendEvent( hex );
 		lastHex = hex;
 		lastTime = new Date();
-		console.log('UID:', hex);
+		console.log('[NFC] UID:', hex);
 	}
 });
 
-console.log('Démarrage NFC ...');
+console.log('[NFC] Démarrage NFC ...');
 n.start();
-console.log('OK');
+console.log('[NFC] OK');
 
 
 function sendEvent( url )
 {
+	/*
 	var options = {
 	  hostname: 'localhost',
 	  port: 8081,
 	  path: '/'+url,
 	  method: 'GET'
 	};
-
-	var req = http.request(options, function(res) {
-	  /*
-	  //console.log('STATUS: ' + res.statusCode);
-	  //console.log('HEADERS: ' + JSON.stringify(res.headers));
-	  res.setEncoding('utf8');
-	  res.on('data', function (chunk) {
-		console.log('BODY: ' + chunk);
-	  });
-	  */
-	});
+	*/
 	
+	http.get('localhost:8081/'+url);
+
+	/*var req = http.request(options, function(res) {
+	  
+	});
 	// write data to request body
 	req.write('');
 	req.end();
+	*/
 }
 
 

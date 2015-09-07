@@ -6,6 +6,7 @@ body,html,p,ul,li,h1,h2,h3,h4{
 
 body,html{
 	height: 100%;
+	background: #ddd;
 }
 
 header{
@@ -32,13 +33,24 @@ header{
 }
 
 #lastlog{
-	height: 15%;
+	height: 20%;
 	text-align: center;
 	font-size : 10vh;
 }
 
+#lastlog li{
+	font: 3vh bold Arial,Verdana;
+	float: left;
+	margin: 10px;
+	background: #f00;
+	padding: 10px;
+	color: yellow;
+	border-radius: 10px;
+}
+
+
 #listing{
-	height: 85%;
+	height: 80%;
 	
 }
 
@@ -94,5 +106,13 @@ div.zoneDroite{
 }
 
 
+#passages{
+	overflow: auto;
+	max-height: 100px;
+}
 
+#btOubli{
+	font: 3vh bold Verdana,Arial,Tahoma; 
+	padding: 5vh 10vh;
+}
 

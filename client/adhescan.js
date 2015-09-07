@@ -18,6 +18,9 @@ var adheScanJSapp = angular.module('adheScanJSapp', [
  */
 var adheScanJS = angular.module('adheScanJS',[]);
 
+var sounds = [];
+sounds['bip'] = new Audio('/audio/bip.mp3');
+sounds['bop'] = new Audio('/audio/alarme1.mp3');
 
 
 adheScanJS.factory('socket', ['$rootScope', function ($rootScope) {
@@ -65,6 +68,7 @@ adheScanJS.controller('adheScanJSCtrl', ['$scope','$interval','socket',
         
         $scope.mode_wait_badge = false;
         $scope.mode_supp_badge = false;
+        $scope.mode_admin = false;
         $scope.passages = [];
         
         for( var e in $scope.users )
@@ -74,9 +78,27 @@ adheScanJS.controller('adheScanJSCtrl', ['$scope','$interval','socket',
         
         $scope.connected = true;
         
-        $scope.lastlog_name = 'test';
+        $scope.lastlog_name = '';
+        $scope.lastlog_errors = [];
         
         socket.on('log', function (data) {
+			$scope.onBadge( data );
+		});
+        
+        
+        $scope.check_timer = $interval( function(){
+												if( io.managers[ url_server ].connected.length == 1 && io.managers[ url_server ].connected[0].connected==true  )
+													$scope.connected = true;
+												else
+													$scope.connected = false;
+												}
+									 ,1000 );
+        
+        
+        
+        
+        $scope.onBadge = function( data )
+        {
 			data = data.toLowerCase();
 			$scope.lastlog_id = data;
 			console.log( data );
@@ -97,9 +119,11 @@ adheScanJS.controller('adheScanJSCtrl', ['$scope','$interval','socket',
 						{
 							if( $scope.users[ i ].badges[ j ] == data )
 							{
-								$scope.lastlog_name = $scope.users[ i ].prenom;
+								/*$scope.lastlog_name = $scope.users[ i ].prenom;
 								$scope.passages.unshift( { time: new Date(), badge: data, nom: $scope.users[ i ].nom, prenom: $scope.users[ i ].prenom  } );
 								$scope.pass( $scope.users[ i ]._id, data );
+								*/
+								$scope.validPassage( $scope.users[ i ], data );
 								return;
 							}
 						}
@@ -116,18 +140,36 @@ adheScanJS.controller('adheScanJSCtrl', ['$scope','$interval','socket',
 			}
 			$scope.lastlog_name = 'Inconnu';
 			$scope.passages.unshift( { time: new Date(), badge: data, nom: '?', prenom: '?'  } );
-								
+		}
+        
+        $scope.validPassage = function( user, badge )
+        {
+			$scope.lastlog_errors = [];
 			
-		});
+			if( ! user.adhesion.paiement )
+				$scope.lastlog_errors.push('Manque règlement');
+			
+			if( ! user.adhesion.certif )
+				$scope.lastlog_errors.push('Manque certificat médical');
+			
+			if( ! user.adhesion.certif && ! user.adhesion.decharge )
+				$scope.lastlog_errors.push('Remplissez une décharge de responsabilité');
+			
+			if( user.age < 18 && ! user.adhesion.auth_parent )
+				$scope.lastlog_errors.push('Manque authorisation parentale');
+			
+			if( $scope.lastlog_errors.length == 0 )
+				sounds['bip'].play();
+			else
+				sounds['bop'].play();
+				
+			$scope.lastlog_name = user.prenom+' '+user.nom;
+			$scope.passages.unshift( { time: new Date(), badge: badge, nom: user.nom, prenom: user.prenom  } );
+			$scope.pass( user._id, badge );
+			
+			$scope.mode_admin = ( user._id == 195 );
+		}
         
-        
-        $scope.check_timer = $interval( function(){
-												if( io.managers[ url_server ].connected.length == 1 && io.managers[ url_server ].connected[0].connected==true  )
-													$scope.connected = true;
-												else
-													$scope.connected = false;
-												}
-									 ,1000 );
         
         
         /*
