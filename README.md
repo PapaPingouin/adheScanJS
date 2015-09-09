@@ -19,4 +19,4 @@ nodejs nfc.js
 nodejs local.js
 
 
-![](https://raw.githubusercontent.com/PapaPingouin/adheScanJS/master/doc/adhescan.svg)
+![](https://raw.githubusercontent.com/PapaPingouin/adheScanJS/master/doc/adhescan.png)
