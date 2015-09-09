@@ -19,4 +19,4 @@ nodejs nfc.js
 nodejs local.js
 
 
-![Coucou](http://www.allodessin.com/tuts/47/dessiner-un-bebe-pingouin-4.jpg)
+![](https://raw.githubusercontent.com/PapaPingouin/adheScanJS/master/doc/adhescan.svg)
