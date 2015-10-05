@@ -211,7 +211,7 @@ adheScanJS.controller('adheScanJSCtrl', ['$scope','$interval','socket',
 		{
 			remove = remove || false;
 			
-			socket.emit( 'push', {  '_id': $scope.details._id  ,'type':( remove ? 'suppbadge':'badge' ), value : badge_id } );
+			socket.emit( 'push', {  '_id': $scope.details._id  ,'type':( remove ? 'suppbadge':'badge' ), value : badge_id , time: new Date() } );
 			console.log( ( remove ? 'suppBadge':'addBadge' ),badge_id );
 			socket.emit( 'save', $scope.users );
 			console.log( "Save" );

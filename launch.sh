@@ -1,13 +1,11 @@
 #!/bin/bash
 
-./getdata.sh
+cd /home/don/adheScanJS/
 
-cd servers
+./start.sh
 
-nodejs nfc.js &
-echo "Lancement NFC deamon OK"
+sleep 2 
 
-nodejs local.js &
-echo "Lancement Serveur Local OK"
+./startclient.sh
 
 cd ..
