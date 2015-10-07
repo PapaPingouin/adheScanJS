@@ -11,6 +11,8 @@ npm install nfc
 
 npm install socket.io
 
+sudo npm install forever -g
+
 
 start
 =====
@@ -18,6 +20,12 @@ start
 nodejs nfc.js
 
 nodejs local.js
+
+ou
+
+forever start local.js
+
+forever start nfc.js
 
 
 ![](https://raw.githubusercontent.com/PapaPingouin/adheScanJS/master/doc/adhescan.png)
