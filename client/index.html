@@ -36,6 +36,7 @@
 				Date de naissance : {{details.naissance}}<br />
 				Séance : <span ng-repeat="seance in details.adhesion.seances">{{seance}} </span><br />
 				Paiement : {{details.adhesion.paiement.mode}} {{details.adhesion.paiement.value}} €<br />
+				Photo : <input type='checkbox' ng-model="details.adhesion.photo" ng-change="push('photo');" /><br />
 				Certificat médical : <input type='checkbox' ng-model="details.adhesion.certif" ng-change="push('certif');" /><br />
 				Décharge de responsabilité : <input type='checkbox' ng-model="details.adhesion.decharge" ng-change="push('decharge');"  /><br />
 				<div ng-if="details.age < 18">
